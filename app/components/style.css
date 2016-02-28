@@ -1,0 +1,99 @@
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #bbb;
+  color: #212121; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif; }
+
+html, button, input, select, textarea,
+.pure-g [class*="pure-u"] {
+  /* Set your content font stack here: */
+  font-family: 'Source Sans Pro', sans-serif; }
+
+.pure-g > div {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.l-box {
+  padding: 1em; }
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  background-color: #efefef;
+  /*border-right: 1px solid black;*/ }
+
+#navigation {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99; }
+
+.content {
+  margin-top: 1em;
+  margin-left: 25%;
+  padding-left: 2em; }
+
+.section-header {
+  color: #0071bc; }
+
+.message {
+  margin-bottom: 0.5em; }
+
+.message-bubble {
+  display: inline-block;
+  background-color: #fff;
+  padding: 0.8em 1em;
+  max-width: 30em;
+  border-radius: 0.8em; }
+
+.message-p {
+  margin: 0;
+  margin-bottom: 0.5em; }
+
+.message-bubble .message-p:last-child {
+  margin: 0; }
+
+.container input {
+  position: absolute;
+  left: -9999px; }
+
+.container label {
+  display: inline-block;
+  position: relative;
+  margin: 20px;
+  padding: 15px 30px 15px 62px;
+  border: 3px solid #fff;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #6a8494;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .2s, box-shadow .2s; }
+
+.container label::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  width: 32px;
+  border: 3px solid #fff;
+  border-radius: 100px;
+  transition: background-color .2s; }
+
+.container label:hover, .container input:focus + label {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); }
+
+.container input:checked + label {
+  background-color: #ab576c; }
+
+.container input:checked + label::before {
+  background-color: #fff; }
