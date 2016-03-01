@@ -12,14 +12,10 @@ export default function form(state = initial, action) {
         case 'SEND_MESSAGE':
             if (action.msgType != 'FORM') return state;
             
-            console.log('send form message');
-            console.log(action);
             let {type, ...form} = action;
             
             let newState = Object.assign({}, {...form});
             
-            console.log('newform');
-            console.log(newState);
             
             return newState;
         default:

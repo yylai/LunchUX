@@ -5,6 +5,11 @@ export const steps = {
     ASK_CHILD_INCOME_DONE: 'ASK_CHILD_INCOME_DONE'
 }
 export const messages = (step, state) => {
+    
+    let childData = state.appData.child;
+    let childSteps = state.appData.childSteps;
+    let currentCid = 0;
+    
     switch (step) {
         case steps.ASK_CHILD_INCOME_START:
             return [
@@ -15,10 +20,8 @@ export const messages = (step, state) => {
                 ['Please select the children below who has income to report']
                 ];       
         case steps.ASK_CHILD_INCOME_DETAILS:
-           
-            //currentCid = childSteps.current_child;
-            //const name = childData[currentCid].fName;
-            let nameincome = `Let's start with Jon`;
+            currentCid = state.appData.child_income_index[0];
+            let nameincome = "So let's select " + childData[currentCid].fName + "'s income..";
             
             return [
                 ['Having accurate income information is important for your application. Please answer to the best of your knowledge..'],
@@ -50,19 +53,10 @@ export const form = (step, state) => {
             };
         case steps.ASK_CHILD_HAS_INCOME:
             
-            const names = ['John Snow', 'Bran Stark'];
-            // const names = Object.keys(childData).map(k => {
-            //     return childData[k].fName;
-            // });
-            // const ids = Object.keys(childData).map(k => {
-            //     return k;
-            // });
+            const names = Object.keys(childData).map(k => {
+                return childData[k].fName;
+            });
             
-            //hack to store state without resorting to redux, this is local
-            //state anyway...
-            window.cid = 0;
-            
-            //get child name and id
             //add names, ids property to multicheck. 
             //at ADD_CHILD_HAS_INCOME, on global reducer, we store global state of the array of child income to work on. cidForIncome
             return {
@@ -72,13 +66,15 @@ export const form = (step, state) => {
                 title:"Select children that has income.",
                 has_na: true,
                 has_ok: true,
+                return_index: true,
                 text: names
             }
         case steps.ASK_CHILD_INCOME_DETAILS:
-            //at ADD_CHILD_INCOME, we pop/slice at global state of cidForIncome then we check in steps DONE if need to come here again
+            currentCid = state.appData.child_income_index[0];
+            
            return {
                 formType: 'ANS_CHILD_INCOME',
-                cbAction: {type: 'ADD_CHILD_INCOME'},
+                cbAction: {type: 'ADD_CHILD_INCOME', cid: currentCid},
                 section: 'childincome'
             }
         case steps.ASK_CHILD_INCOME_DONE:
@@ -123,13 +119,21 @@ export const refreshSteps = (prevStep, state) => {
             //else go to income details
             
             //hack for now
-            return [steps.ASK_CHILD_INCOME_DETAILS];
+             if (app.child_income_index && app.child_income_index.length > 0) {
+                return [steps.ASK_CHILD_INCOME_DETAILS];
+            } else {
+                 return [steps.ASK_CHILD_INCOME_DONE];
+            }
             
         case steps.ASK_CHILD_INCOME_DETAILS:
             //check global state for if any more income to work on, 
             //if not, we go to done, else we return income details again
             
-            return [steps.ASK_CHILD_INCOME_DONE];
+            if (app.child_income_index.length > 0) {
+                return [steps.ASK_CHILD_INCOME_DETAILS];
+            } else {
+                 return [steps.ASK_CHILD_INCOME_DONE];
+            }
         case steps.ASK_CHILD_INCOME_DONE:
         
             //if somemore..?

@@ -15,8 +15,6 @@ export default function childMessages(state = initial, action) {
             if (action.section != 'child') return state;
             if (action.msgType === 'FORM') return state;
             
-            console.log(action);
-        
             return [
                 ...state, 
                 {

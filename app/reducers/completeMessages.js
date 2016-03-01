@@ -14,8 +14,6 @@ export default function CompleteMessages(state = initial, action) {
             //might fail for testing if we restrict to rrul
             if (action.msgType === 'FORM') return state;
             
-            console.log(action);
-        
             return [
                 ...state, 
                 {

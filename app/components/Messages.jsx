@@ -11,8 +11,6 @@ import FlipMove from 'react-flip-move';
 
 export default ({messages}) => {
     
-    console.log(messages);
-    
     return (
         <div className="messages">
          <FlipMove  duration={500}

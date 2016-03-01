@@ -7,32 +7,26 @@ const mapStateToProps = (state, ownProps) => {
     
     switch (ownProps.section) {
         case 'welcome':
-            console.log('in welcome container');
             return {
                  messages: state.welcomeMessages
             };
         case 'assistance':
-            console.log('in assistance container');
             return {
                  messages: state.assistanceMessages
             };
         case 'child':
-            console.log('in child container');
             return {
                  messages: state.childMessages
             };
         case 'childincome':
-            console.log('in childincome container');
             return {
                 messages: state.childIncomeMessages
         };
         case 'adult':
-            console.log('in adult container');
             return {
                 messages: state.adultMessages
         };
         case 'complete':
-            console.log('in complete container');
             return {
                 messages: state.completeMessages
         };

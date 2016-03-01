@@ -1,4 +1,6 @@
 
+import req from 'superagent';
+
 const InitialProgress = {
     'welcome': false,
     'child': false,
@@ -12,6 +14,18 @@ const InitialProgress = {
 export default function progress(state = InitialProgress, action) {
     
     switch (action.type) {
+        case 'SET_FINISH_LATER':
+        
+            //maybe not needed since we update a separate table..
+            let finalState = Object.assign({}, state, {finish_later: true});
+            
+            // req.post('/api/finishlater')
+            // .send({pin: '1234', section: state.current, email: 'yin@yin.com'})
+            // .end(function (err, res) {
+            //     console.log('return');
+            //     console.log(res);
+            // });
+            
         case 'SET_CURRENT_SECTION':
             return Object.assign({}, state, {current: action.value});
         case 'MARK_COMPLETED':
@@ -43,8 +57,6 @@ export default function progress(state = InitialProgress, action) {
                 'complete': true
                 }
                 
-                console.log('asas');
-                console.log(allcompleted)
             return Object.assign({}, state, {...allcompleted});
             }
             return state;

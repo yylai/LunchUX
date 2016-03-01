@@ -32,7 +32,6 @@ export const messages = (step, state) => {
             let racemsg = [];
             racemsg.push(['Below are the childrens Racial and Ethnic Identities. Please select any that applies, or select None if you do not wish to share.']);
             return racemsg;
-            
         case steps.ASK_COMPLETE_DONE:
              let donemsg = [];
             donemsg.push(['Congratulations! Your Application has been submitted!']);
@@ -106,5 +105,6 @@ export const refreshSteps = (prevStep, state) => {
         case steps.ASK_COMPLETE_RACE:
             return [steps.ASK_COMPLETE_DONE]
         case steps.ASK_COMPLETE_DONE:
+            
     }
 }

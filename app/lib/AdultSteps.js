@@ -1,5 +1,6 @@
 export const steps = {
     ASK_ADULT_START: 'ASK_ADULT_START',
+    ASK_ADULT_TOTAL_HOUSE_COUNT: 'ASK_ADULT_TOTAL_HOUSE_COUNT',
     ASK_ADULT_COUNT: 'ASK_ADULT_COUNT',
     ASK_ADULT_NAME: 'ASK_ADULT_NAME',
     ASK_ADULT_HAS_INCOME: 'ASK_ADULT_HAS_INCOME',
@@ -26,11 +27,17 @@ export const messages = (step, state) => {
     switch (step) {
         case steps.ASK_ADULT_START:
             return [
-                ['We will be asking you the size of your household members and income for each adult.']
+                ['We will be asking you the size of your household members, the  and income for each adult.']
                 ];
+        case steps.ASK_ADULT_TOTAL_HOUSE_COUNT:
+             const totalhousecount = [];
+             totalhousecount.push(['Including yourself, what is the total number of household members (Children and Adults)?']);
+             
+             
+            return totalhousecount;
         case steps.ASK_ADULT_COUNT:
              const adultcountmsg = [];
-             adultcountmsg.push(['Including yourself, how many adult members are in your household?']);
+             adultcountmsg.push(['How many adult members are there in your household (including yourself)?']);
              
              
             return adultcountmsg;
@@ -67,8 +74,6 @@ export const messages = (step, state) => {
             const adultincmsg = [];
              
             adultincmsg.push(['IMPORTANT! Having accurate income information is crucial for your application. Please answer to the best of your knowledge.']);
-            //adultincmsg.push(['First, you will pick an income category, and we will ask you details on the income amount and how often']);
-            //adultincmsg.push(["Don’t worry, you will be able to review and edit your answers before final submission."]);
 
              return adultincmsg;
         case steps.ASK_ADULT_DONE:
@@ -101,6 +106,16 @@ export const form = (step, state) => {
             cbAction: {type: 'GET_NEXT_STEP'},
             section: 'adult',
             value: true
+        };
+        case steps.ASK_ADULT_TOTAL_HOUSE_COUNT:
+            return {
+            formType: 'ANS_SINGLE_INPUT',
+            cbAction: {type: 'ADD_TOTAL_HOUSE_COUNT'},
+            section: 'adult',
+            title: 'Numbers only',
+            value: 'number',
+            placeholder: "Total # of Household",
+            min: 1
         };
         case steps.ASK_ADULT_COUNT:
             return {
@@ -177,6 +192,8 @@ export const refreshSteps = (prevStep, state) => {
             //here is where we can check adultSteps and jump right to the
             //next step if user happens to reload the app
             
+            return [steps.ASK_ADULT_TOTAL_HOUSE_COUNT];
+        case steps.ASK_ADULT_TOTAL_HOUSE_COUNT:
             return [steps.ASK_ADULT_COUNT];
         case steps.ASK_ADULT_COUNT:
         

@@ -25,7 +25,7 @@ export const messages = (step, state) => {
                 ['Is this a new application?']
             ]
         case steps.ASK_EMAIL_ADDRESS:
-        return [ ["Before we get started, please provide your contact information. If you have no permanent address, this does not make your children ineligible."], 
+        return [ ["Before we get started, please provide your contact information."], 
                 ['Sharing your contact information is optional, but will help us reach you quickly if we need to contact you.']
             ]
          case steps.ASK_PIN:

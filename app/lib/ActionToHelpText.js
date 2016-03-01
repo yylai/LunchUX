@@ -36,7 +36,10 @@ const mapActionToHelpText = (action) => {
             return {
                 text: [["List the amount that you normally get."],["For example, if you normally get $1000 each month, but you missed some work last month and only got $900, put down that you get $1000 per month."],["If you normally get overtime, include it, but not if you get it only sometimes."]], type: 'p'
              }
-             
+        case "ADD_TOTAL_HOUSE_COUNT":
+            return {
+                text: [['Do not count any adults living with you who does not share in the entire household income expenses.'], ['However, you do need to include any adults who are part of the household expenses but does not receive any income.']], type: 'p'
+            } 
         case "ADD_ADULT_COUNT":
             return {
                 text: [['Do not count any adults living with you who does not share in the entire household income expenses.'], ['However, you do need to include any adults who are part of the household expenses but does not receive any income.']], type: 'p'
@@ -52,7 +55,10 @@ const mapActionToHelpText = (action) => {
                 ["Pension / Retirement / IRA / Other -  Include Worker’s Comp, unemployment, strike benefits, SSI, VA benefits, disability benefits, regular contributions from people who do not live in your household. Report net income for self-owned business, farm, or rental income."]],
                 type: 'li'
             }
-            
+        case "ADD_SIGNER_NAME_SIGNATURE":
+        return {
+                 text: [['If you have no permanent address, this does not make your children ineligible.']], type: 'p'
+             }
         default:
              return {
                  text: [['On this panel, we will provide help and clarifications to terms that you will encounter during your application process.']], type: 'p'

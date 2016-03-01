@@ -7,7 +7,6 @@ const UpdateState = (dispatch, updateAction, formData) => {
     console.log(updateAction);
     
     let action = Object.assign(updateAction, {...formData});
-    console.log(action);
     
     dispatch(action);
 }

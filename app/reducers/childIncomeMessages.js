@@ -12,8 +12,6 @@ export default function childIncomeMessages(state = initial, action) {
             if (action.section != 'childincome') return state;
             if (action.msgType === 'FORM') return state;
             
-            console.log(action);
-        
             return [
                 ...state, 
                 {

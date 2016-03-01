@@ -134,14 +134,14 @@ export const form = (step, state) => {
             return {
             formType: 'ANS_NEXT',
             cbAction: {type: 'INC_CHILD_INDEX', cid: currentCid},
-            section: 'adult',
+            section: 'child',
             value: true
         };
         case steps.ASK_CHILD_DONE:
             currentCid = childSteps.current_child;
             return {
             formType: 'ANS_NEXT',
-            cbAction: {type: 'GET_NEXT_STEP'},
+            cbAction: {type: 'RESET_CHILD_INDEX'},
             section: 'child',
             cid: currentCid,
             value: true

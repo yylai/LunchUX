@@ -57,8 +57,8 @@ const validateInput = (type, value, isRequired=true) => {
 }
 
 
-const renderEmailAddress = (form, nextStep, appmsgcb) => (
-   <EmailAddressComponent cbAction={form.cbAction} cb={nextStep} />
+const renderEmailAddress = (form, nextStep, appmsgcb, replycb) => (
+   <EmailAddressComponent replycb={replycb} appmsgcb={appmsgcb} cbAction={form.cbAction} cb={nextStep} />
 )
 
 class EmailAddressComponent extends React.Component {
@@ -66,34 +66,35 @@ class EmailAddressComponent extends React.Component {
    state = {
         isValid: true,
         currentComponent: 'email',
-        errorMsg: '',
-        contact: {}
+        errorMsg: ''
     }
     
     componentDidUpdate() {
              window.setTimeout(()=>{this.refs.email.focus()},50); //hack to avoid instant focus and filled with hotkey value
     }
     
-    
-    toggleComponent = () => {
-        if (this.state.currentComponent == 'email') {
-            this.setState({currentComponent: 'address'});
-        } 
-    }
-    
-    handleEmailOk = (value) => {
+    handleEmailOk = () => {
+        const {cbAction, cb} = this.props;
+        //validate email here
+        let reply = this.refs.email.value;
         
-        this.toggleComponent();
+        cb(cbAction, {email: this.refs.email.value}, reply);
     }
     
      handleEnter = (e) => {
         if(e.keyCode != 13) return;
-        
+        this.handleEmailOk();
     }
     
-    handleClick = (e) => {
+    handleNoEmail = (e) => {
         const {cbAction, cb} = this.props;
-        cb(cbAction, {}, 'gha@yahoo.com');
+        cb(cbAction, {email: ''}, 'Skip');
+    }
+    
+    handleEnter = (e) => {
+        if(e.keyCode != 13) return;
+        
+        this.handleEmailOk();
     }
     
     renderEmail = () => {
@@ -101,28 +102,8 @@ class EmailAddressComponent extends React.Component {
                 <div className="pure-form answerWrapper">
                     <h4 className="answer-header">Email (Optional)</h4>
                     <input ref='email' type='text' placeholder='Email' />
-                    <button onClick={this.handleEmailOk} type="button" className="pure-button pure-button-primary">Ok<i className="fa fa-check icon-right"></i></button><span className="hotkey">Press <b>ENTER</b></span>
-                    {
-                        this.state.isValid ? null : <ErrorMsgComponent msg={this.state.errorMsg} /> 
-                    }
-                </div>
-        )
-    }
-    
-    renderAddress = () => {
-        return (
-                <div className="pure-form answerWrapper address">
-                    <h4 className="answer-header">Address (Optional)</h4>
-                    <div className="address-row">
-                        <input ref='Address1' onBlur={this.handleBlur} type='text' placeholder='Street Address' />
-                        <input ref='Address2' size='5' onBlur={this.handleBlur} type='text' placeholder='Apt #' />
-                    </div>
-                    <div className="address-row">
-                        <input ref='City' onKeyDown={this.handleEnter} onBlur={this.handleBlur} type='text' placeholder='City' />
-                        <input ref='State' size='4' onKeyDown={this.handleEnter} onBlur={this.handleBlur} type='text' placeholder='State' />
-                        <input ref='Zip' size='6' onKeyDown={this.handleEnter} onBlur={this.handleBlur} type='text' placeholder='Zip' />
-                    </div>
-                    <button onClick={this.handleClick} type="button" className="pure-button pure-button-primary">Ok<i className="fa fa-check icon-right"></i></button>
+                    <button onClick={this.handleEmailOk} type="button" className="pure-button pure-button-primary">Ok<i className="fa fa-check icon-right"></i></button>
+                    <button onClick={this.handleNoEmail} type="button" className="pure-button">Skip</button>
                     {
                         this.state.isValid ? null : <ErrorMsgComponent msg={this.state.errorMsg} /> 
                     }
@@ -131,16 +112,7 @@ class EmailAddressComponent extends React.Component {
     }
     
     render() {
-        console.log(this.state);
-        
-        switch(this.state.currentComponent) {
-            case 'email':
-                return this.renderEmail();
-            case 'address':
-                return this.renderAddress();
-            default:
-                return null;
-        }
+        return this.renderEmail();
     }
     
 }
@@ -196,7 +168,7 @@ class SingleInputComponent extends React.Component {
     }
     
     render() {
-        const {type, title, placeholder} = this.props;
+        const {cbAction, type, title, placeholder} = this.props;
         return (
                 <div className="pure-form answerWrapper">
                    { title ? <h4 className="answer-header">{title}</h4> : null }
@@ -388,6 +360,10 @@ class IncomeAmountFrequency extends React.Component {
     }
         
     getValue = () => {
+        
+        const vv = this.refs.cbl;
+        
+        
         return {
             amount: this.refs.amount,
             freq: this.ref.weekly
@@ -474,7 +450,7 @@ class AdultIncomeComponent extends React.Component {
         
         const {cbAction, cb} = this.props;
         
-        cb(cbAction, this.state.income, '');
+        cb(cbAction, {income: this.state.income}, '');
     }
     
     replyIncome = () => {
@@ -519,7 +495,7 @@ class AdultIncomeComponent extends React.Component {
         
         const income = this.state.income;
         
-        income[this.state.currentCat] = result;
+        income[this.state.currentSubCat] = result;
         
         this.setState({income: income}, this.replyIncome);
         this.setState({currentComponent: ['category']}); //reset
@@ -589,21 +565,6 @@ class AdultIncomeComponent extends React.Component {
         
         //provide hints on sub cat
         this.props.appmsgcb(["How much and how often do you receive for the income from " + subcat]);
-        // switch (subcat) {
-        //     case 'Earnings From Work':
-        //         this.props.appmsgcb(["Earnings From Work could be one of the following types of income.."]);
-        //         break;
-        //     case 'Self-Employed':
-        //         this.props.appmsgcb(["Self-Employed  let's enter the income from " + subcat]);
-        //         break;
-        //     case 'Strike Benefits':
-        //         this.props.appmsgcb(["Ok let's enter the income from " + subcat]);
-        //         break;
-        //     case 'Military':
-        //         this.props.appmsgcb(["Ok let's enter the income from " + subcat]);
-        //         break;
-            
-        // }
     }
     
     getSubCat = (cat) => {
@@ -616,6 +577,12 @@ class AdultIncomeComponent extends React.Component {
                 return ['penions','others'];
         }
     }
+    
+    handleCancel = () => {
+        this.props.replycb('Cancel');
+        this.goBack();
+    }
+    
     
     renderSubCat = (cat) => {
         const subcategory = this.getSubCat(this.state.currentCat);
@@ -631,6 +598,7 @@ class AdultIncomeComponent extends React.Component {
                     ))
                 }
                 </div>
+                <button onClick={this.handleCancel} type="button" className="pure-button">Cancel</button>
             </div>
         </div>
         )
@@ -656,17 +624,25 @@ class SignerNameSignatureComponent extends React.Component {
         isValid: true,
         currentComponent: 'name',
         errorMsg: '',
-        name: {}
+        name: {},
+        address: {}
     }
     
     componentDidUpdate() {
+            if (this.state.currentComponent == 'sign')
              window.setTimeout(()=>{this.refs.signature.focus()},50); //hack to avoid instant focus and filled with hotkey value
+            
+            if (this.state.currentComponent == 'address')
+             window.setTimeout(()=>{this.refs.address1.focus()},50); //hack to avoid instant focus and filled with hotkey value
+             
     }
     
     toggleComponent = () => {
         if (this.state.currentComponent == 'name') {
+            this.setState({currentComponent: 'address'});
+        } else if (this.state.currentComponent == 'address') {
             this.setState({currentComponent: 'sign'});
-        } 
+        }
     }
     
     handleNameOk = (value) => {
@@ -675,11 +651,46 @@ class SignerNameSignatureComponent extends React.Component {
         this.toggleComponent();
     }
     
-    handleSubmitSignature = (value) => {
+    handleSubmitAddress = (value) => {
+        
+        if (this.refs.city.value == '' || this.refs.state.value == '' || this.refs.zip.value == '') {
+            this.setState({isValid: false, errorMsg: 'City, State, Zip are required.'});
+            return;
+        }
+        
+        this.setState({isValid: true, errorMsg: '', address: {
+            address1: this.refs.address1.value,
+            address2: this.refs.address2.value,
+            city: this.refs.city.value,
+            state: this.refs.state.value,
+            zip: this.refs.zip.value
+        }}, this.toggleComponent());
+    }
+    
+    handleEnter = (e) => {
+        if(e.keyCode != 13) return;
+        this.handleSubmitSignature();
+    }
+    
+    handleAddressEnter = (e) => {
+        if(e.keyCode != 13) return;
+        this.handleSubmitAddress();
+    }
+    
+    handleSubmitSignature = () => {
+        const signedName = this.refs.signature.value;
+        
+        if (signedName == '') {
+            this.setState({isValid: false, errorMsg: 'Signature is required'});
+            return;
+        }
+        
+        
         const {cbAction, cb} = this.props;
         const names = {
             name: this.state.name,
-            signature: value
+            signature: signedName,
+            address: this.state.address
         }
         cb(cbAction, names, "SIGNED.");
     }
@@ -709,6 +720,27 @@ class SignerNameSignatureComponent extends React.Component {
             </div>
         )
    }
+   
+   renderAddress = () => {
+        return (
+                <div className="pure-form answerWrapper address">
+                    <h4 className="answer-header">Address (Only City, State, Zip are required)</h4>
+                    <div className="address-row">
+                        <input ref='address1' onBlur={this.handleBlur} type='text' placeholder='Street Address' />
+                        <input ref='address2' size='5' onBlur={this.handleBlur} type='text' placeholder='Apt #' />
+                    </div>
+                    <div className="address-row">
+                        <input ref='city' onKeyDown={this.handleAddressEnter} onBlur={this.handleBlur} type='text' placeholder='City' />
+                        <input ref='state' size='4' onKeyDown={this.handleAddressEnter} onBlur={this.handleBlur} type='text' placeholder='State' />
+                        <input ref='zip' size='6' onKeyDown={this.handleAddressEnter} onBlur={this.handleBlur} type='text' placeholder='Zip' />
+                    </div>
+                    <button onClick={this.handleSubmitAddress} type="button" className="pure-button pure-button-primary">Ok<i className="fa fa-check icon-right"></i></button>
+                    {
+                        this.state.isValid ? null : <ErrorMsgComponent msg={this.state.errorMsg} /> 
+                    }
+                </div>
+        )
+    }
         
     render() {
         console.log(this.state);
@@ -718,6 +750,8 @@ class SignerNameSignatureComponent extends React.Component {
                 return this.renderName();
             case 'sign':
                 return this.renderSignature();
+            case 'address':
+                return this.renderAddress();
             default:
                 return null;
         }
@@ -741,9 +775,10 @@ class SignerSSNComponent extends React.Component {
     
      handleEnter = (e) => {
         if(e.keyCode != 13) return;
-        const {appmsgcb} = this.props;
-        
-        
+        this.handleSubmit();
+    }
+    
+     handleSubmit = () => {
         const ssn = parseInt(this.refs.ssn.value);
         if (isNaN(ssn) || this.refs.ssn.value.length != 4) {
            this.setState({isValid: false, errorMsg: 'Only 4 digits for SSN is allowed'})
@@ -761,6 +796,11 @@ class SignerSSNComponent extends React.Component {
         cb(cbAction, ssnData, ssn);
     }
     
+    handleCancel = () => {
+        this.props.replycb('Cancel');
+        this.toggleComponent();
+    }
+    
      handleYNKey = (e) => {
         const x = e.charCode || e.keyCode;
         const char = String.fromCharCode(x).toUpperCase();
@@ -774,10 +814,6 @@ class SignerSSNComponent extends React.Component {
             default:
                 return;
         }
-    }
-    
-    handleCancel = () => {
-        this.toggleComponent();
     }
     
     toggleComponent = () => {
@@ -880,7 +916,8 @@ class AssistanceProgramComponent extends React.Component {
      state = {
         isValid: true,
         currentComponent: 'program',
-        currentProg: ''
+        currentProg: '',
+        errorMsg: ''
     }
     
      toggleComponent = () => {
@@ -984,6 +1021,14 @@ class AssistanceProgramComponent extends React.Component {
     
     handleSubmit = () => {
          const {cbAction, cb} = this.props;
+         const val = this.refs.caseNumber.value;
+         
+         if (val == '') {
+             this.setState({isValid: false, errorMsg: 'Case Number is required'})
+             return;
+         }
+         //validate
+         
          let data = {
             has_program: true,
             caseNumber: this.refs.caseNumber.value,
@@ -1002,13 +1047,15 @@ class AssistanceProgramComponent extends React.Component {
     
     handleBlur = () => {
          const {appmsgcb} = this.props;
-         
+         const val = this.refs.caseNumber.value;
     }
     
     handleCancel = () => {
         this.toggleComponent();
         this.setState({currentProg: ''});
-        const {appmsgcb} = this.props;
+        const {replycb} = this.props;
+        replycb('Cancel');
+        
     }
     
      componentDidUpdate() {
@@ -1069,6 +1116,9 @@ class ChildIncomeComponent extends React.Component {
     }
     
     handleCancel = () => {
+        const {replycb} = this.props;
+        replycb('Cancel');
+        
         this.toggleCat();
     }
     
@@ -1080,10 +1130,13 @@ class ChildIncomeComponent extends React.Component {
             reply.push(msg);
                 
         });
-        
+        //{cid, cat, amount, freq}
         const {cbAction, cb} = this.props;
         
-        cb(cbAction, this.state.income, '');
+        console.log('income: ' );
+        console.log(this.state.income);
+        
+        cb(cbAction, {income: this.state.income}, '');
     }
     
     handleCheckItemClick = (cat) => {
@@ -1135,6 +1188,7 @@ class ChildIncomeComponent extends React.Component {
         
         const income = this.state.income;
         
+        //TOOD: so we only allow for 1 source of income for  a particular catgory.. eg. only can enter wages once
         income[this.state.currentCat] = result;
         
         this.setState({income: income}, this.replyIncome);
@@ -1229,8 +1283,9 @@ class ButtonComponent extends React.Component {
     }
 }
 
+
 const renderMulti = (form, nextStep) => (
-    <MultiCheckComponent btnText={form.btnText} has_ok={form.has_ok} title={form.title} has_na={form.has_na} text={form.text} cbAction={form.cbAction} cb={nextStep} />
+    <MultiCheckComponent return_index={form.return_index} btnText={form.btnText} has_ok={form.has_ok} title={form.title} has_na={form.has_na} text={form.text} cbAction={form.cbAction} cb={nextStep} />
 )
 
 class MultiCheckComponent extends React.Component {
@@ -1269,8 +1324,7 @@ class MultiCheckComponent extends React.Component {
   }
   
     getValues = () => {
-        
-        let values = {};
+       let values = {};
         
         //not too robust if order happen to change but props is fixed so should be ok..
         this.props.text.forEach((t, i) => {
@@ -1279,7 +1333,7 @@ class MultiCheckComponent extends React.Component {
         
         if (this.refs.none) values['None'] = this.refs.none.isChecked();
         
-        return values;
+        return {value: values};
     }
     
     handleOk = (e) => {
@@ -1287,14 +1341,15 @@ class MultiCheckComponent extends React.Component {
         const isValid = this.validate();
         if (isValid) {
              const {cbAction, cb} = this.props;
+             
              const rtnVal = this.getValues();
-             const reply = Object.keys(rtnVal).filter( k => {
-                 return rtnVal[k];
+             
+             const reply = Object.keys(rtnVal.value).filter( k => {
+                 return rtnVal.value[k];
              }).join(', ');
              
-             //const {add_child_has_income, cids} = this.props;
+            cb(cbAction, this.getValues(), reply);
              
-             cb(cbAction, this.getValues(), reply);
         } else {
             e.preventDefault();
             return
@@ -1577,7 +1632,9 @@ export default ({form, nextStep, replycb, appmsgcb}) => {
         case 'ANS_SIGNER_NAME_SIGNATURE':
             return renderSignerNameSignature(form, nextStep, replycb, appmsgcb)
         case 'ANS_EMAIL_ADDRESS':
-            return renderEmailAddress(form, nextStep);
+            return renderEmailAddress(form, nextStep, appmsgcb, replycb);
+        case 'ANS_CHILD_HAS_INCOME':
+            return renderChildHasIncome(form, nextStep, appmsgcb, replycb);
         default:
             return (
                 null

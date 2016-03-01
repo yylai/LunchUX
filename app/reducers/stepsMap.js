@@ -5,8 +5,6 @@ export default function stepsMap(state = initial, action) {
         case 'SET_NEXT_STEP':
             return [action.value];
         case 'POP_STEP':
-            console.log('stepsmaps: ');
-            console.log(state);
             return state.slice(1);
         case 'REFRESH_STEPS':
             return action.steps.slice();

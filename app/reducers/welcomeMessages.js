@@ -19,8 +19,6 @@ export default function welcomeMessages(state = initial, action) {
             if (action.section != 'welcome') return state;
             if (action.msgType === 'FORM') return state;
             
-            console.log(action);
-        
             return [
                 ...state, 
                 {

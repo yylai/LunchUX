@@ -1,9 +1,13 @@
+import "babel-polyfill";
 import './main.css';
 import './style.css';
+
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import AppReducers from './reducers';
 import WelcomeApp from './components/WelcomeApp';
@@ -18,25 +22,44 @@ import RightSide from './components/RightSide';
 import * as core from './lib/core';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import request from 'superagent';
+
+const loggerMiddleware = createLogger()
+
 
 const store = createStore(
   combineReducers({
     ...AppReducers,
-    routing: routerReducer
-  })
-);
+    routing: routerReducer}), 
+    applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+    loggerMiddleware // neat middleware that logs actions
+    ));
 
 const history = syncHistoryWithStore(browserHistory, store);
-
-// Every time the state changes, log it
-// Note that subscribe() returns a function for unregistering the listener
-let unsubscribe = store.subscribe(() => {
-  console.log(store.getState());
-});
 
 const d = (action) => {
     store.dispatch(action);
 }
+
+const submitApp = () => {
+    const s = store.getState();
+ 
+    let alldone = true;
+    
+    if (s.previousStep == 'ASK_COMPLETE_DONE' && s.getNextStep == false) {
+        Object.keys(s.progress).forEach(k => {
+            alldone = alldone && s.progress[k];
+        });
+        
+        //time to save..
+        if (alldone) {
+           core.saveApplication(s);
+        }
+    }   
+}
+
+let submitListener = store.subscribe(submitApp);
 
 //still need to figure out how to handle finished app step...
 //maybe include a way to handle infinite loops..

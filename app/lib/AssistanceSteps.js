@@ -79,8 +79,6 @@ export const toNextSection = (prevStep) => {
 
 export const getNextSection = (prev, state) => {
     
-    console.log('nex section')
-    console.log(state)
     if (state.assistance && state.assistance.has_program) {
         return 'complete';
      }

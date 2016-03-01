@@ -4,26 +4,96 @@ import * as ChildIncome from './ChildIncomeSteps';
 import * as Adult from './AdultSteps';
 import * as Assistance from './AssistanceSteps';
 import * as Complete from './CompleteSteps';
+import request from 'superagent';
 
-// const SINGLE_INPUT = {
-//     formType: 'ANS_SINGLE_INPUT',
-//     cbAction: 'GET_NEXT_STEP',
-//     title: "Title",
-//     placeholder: 'some placeholder',
-//     value: 'number'
-// };
+const saveAssistance = (pin, state) => {
+    
+     request.post('/api/application/assistance')
+            .send(Object.assign({}, state, {pin: pin}))
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+} 
 
-// const NAME = {
-//     formType: 'ANS_NAME',
-//     cbAction: { type: 'GET_NEXT_STEP' },
-//     title: 'TTTT'
-// }
-// const YN = {
-//     formType: 'ANS_YN',
-//     cbAction: { type: 'GET_NEXT_STEP' },
-//     title: 'TTTT'
-// }
+const saveSigner = (pin, state) => {
+     request.post('/api/application/signer')
+            .send(Object.assign({}, state, {pin: pin}))
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+} 
 
+const saveChild = (pin, state) => {
+    let child = Object.keys(state).map((v, i) => {
+      return {...state[v], pin, cid: i}
+    });
+    
+    
+    request.post('/api/application/child')
+            .send(child)
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+}
+
+const saveAdult = (pin, state) => {
+    console.log(state);
+    let adult = Object.keys(state).map((v, i) => {
+      return {...state[v], pin, aid: i}
+    });
+    
+    
+    request.post('/api/application/adult')
+            .send(adult)
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+}
+
+const saveAdultIncome = (pin, state) => {
+    
+    let adultincome = Object.keys(state).map((v, i) => {
+        return {aid: i, pin: pin, income: state[v].income};
+    });
+    
+    request.post('/api/application/adultincome')
+            .send(adultincome)
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+}
+
+const saveChildIncome = (pin, state) => {
+    console.log('bbb');
+    console.log(state);
+    let childincome = Object.keys(state).map((v, i) => {
+        return {aid: i, pin: pin, income: state[v].income};
+    });
+    
+    request.post('/api/application/childincome')
+            .send(childincome)
+            .end((err, res) => {
+                console.log('return');
+                console.log(res);
+            });
+}
+
+
+export const saveApplication = (state) => {
+    console.log('start save application');
+    saveChild(state.appData.pin, state.appData.child);
+    saveChildIncome(state.appData.pin, state.childIncome);
+    saveAdult(state.appData.pin, state.appData.adult);
+    saveAdultIncome(state.appData.pin, state.adultIncome);
+    saveAssistance(state.appData.pin, state.assistance);
+    saveSigner(state.appData.pin, state.signer);
+    console.log('end save application')
+}
 
 const toMsgAction = (msg, section) => {
     return {
@@ -42,6 +112,48 @@ const toFormAction = (formData, section) => {
         ...formData
     }
 }
+
+export const finishLater = (section) => {
+    return  {
+        type: "FINISH_LATER",
+        section
+    }
+}
+
+export function fetchPosts(subreddit) {
+
+  // Thunk middleware knows how to handle functions.
+  // It passes the dispatch method as an argument to the function,
+  // thus making it able to dispatch actions itself.
+
+  return function (dispatch) {
+
+    // First dispatch: the app state is updated to inform
+    // that the API call is starting.
+
+    dispatch(finishLater(section))
+
+    // The function called by the thunk middleware can return a value,
+    // that is passed on as the return value of the dispatch method.
+
+    // In this case, we return a promise to wait for.
+    // This is not required by thunk middleware, but it is convenient for us.
+
+    return fetch(`http://www.reddit.com/r/${subreddit}.json`)
+      .then(response => response.json())
+      .then(json =>
+
+        // We can dispatch many times!
+        // Here, we update the app state with the results of the API call.
+
+        dispatch(receivePosts(subreddit, json))
+      )
+
+      // In a real world app, you also want to
+      // catch any error in the network call.
+  }
+}
+
 
 export const sendInitialForm = (section) => {
     let action = {

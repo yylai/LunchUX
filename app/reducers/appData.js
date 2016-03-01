@@ -1,15 +1,14 @@
 
 const childNameReducer = (state = {}, action) => {
     
-    //child name is assuming new object but we will need to change if allow modifications
-    let newChild = {
+    let name = {
         lName: action.lName,
         mName: action.mName,
         fName: action.fName
     }
     
     let newState = Object.assign({}, state);
-    newState[action.cid] = newChild; 
+    newState[action.cid] = name; 
     
     return newState;
 }
@@ -60,17 +59,10 @@ const childStatusReducer = (state = {}, action) => {
     
     let newChild = Object.assign({}, state[action.cid]);
     
-    const newStatus = {};
-    newStatus.Runaway = action.Runaway;
-    newStatus.Foster = action.Foster;
-    newStatus.Migrant = action.Migrant;
-    newStatus["Head Start"] = action["Head Start"];
-    newStatus.None = action.None;
     
+    const newChildWithStatus = Object.assign({}, newChild, {statuses: action.value});
     
-    newChild.statuses = newStatus;
-    
-    newState[action.cid] = newChild;
+    newState[action.cid] = newChildWithStatus;
     
     return newState;
 }
@@ -79,12 +71,16 @@ const childStatusReducer = (state = {}, action) => {
 export default function appData(state = {}, action) {
     
     switch (action.type) {
+        case "SUBMIT_APPLICATION":
+            return Object.assign({}, state, {submit: true});
         case "ADD_FIRST_TIME":
             const isNewApp = action.value;
-            //todo: hardcore for now
-            const newPin = 123456;
+            //use time for now
+            let d = new Date();
+            let utc = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDay(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds());
+            const newPin = utc.toString();
             
-            return Object.assign({}, state, {isNewApp, newPin});
+            return Object.assign({}, state, {isNewApp, pin: newPin});
         case "ADD_CHILD_COUNT":
             let child_cnt = parseInt(action.value);
             let childInitState = Object.assign({}, state);
@@ -125,9 +121,21 @@ export default function appData(state = {}, action) {
             
             return Object.assign({}, state, {child: status})
         case "ADD_CHILD_INCOME":
-            //update childsteps as well
+            if(state.child_income_index.length > 0) {
+                let tempindx = [...state.child_income_index];
+                tempindx.shift();
+                
+               return Object.assign({}, state, {child_income_index: tempindx})
+            } 
             return state;
-            break;
+        case "ADD_CHILD_HAS_INCOME":
+            let names = action.value;
+            let indexToAdd = [];
+            Object.keys(names).forEach((v, i) => {
+               if (names[v] && v != 'None') indexToAdd.push(i)
+            });
+            //not robust but should work
+            return Object.assign({}, state, {child_income_index: indexToAdd});
         case "INC_CHILD_INDEX":
             
             let newCId = (action.cid + 1);
@@ -174,11 +182,6 @@ export default function appData(state = {}, action) {
         
            let adulthasincome = adultHasIncomeReducer(state.adult, action);
             return Object.assign({}, state, {adult: adulthasincome})
-            
-        case "ADD_ADULT_INCOME":
-            
-
-            
             
         default:
             return state;

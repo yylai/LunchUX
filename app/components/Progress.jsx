@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import * as core from '../lib/core'
+import request from 'superagent';
 
 class ProgressApp extends React.Component {
   
@@ -69,6 +70,13 @@ class ProgressApp extends React.Component {
       }
   }
   
+  finishLater = () => {
+            const {appmsgcb, replycb} = this.props;
+            
+            appmsgcb(['We would have liked to see the Save&Finish feature fleshed out but decided to drop it to the time constraint and also, kept our focus on demostrating the primary UX that we are proposing.', 'Ideally, it would allowed users to complete their applications at a later time..'], this.props.progress.current);
+            //this.props.submitApp();
+  }
+  
   render() {
      const links = ['Welcome', 'Child Information', 'Assistance Programs', 'Child Income', 'Adult Information', 'Sign & Complete Application'];
      
@@ -86,7 +94,7 @@ class ProgressApp extends React.Component {
             
             <div>
             {
-                progress['complete'] ? null : <button type="button" className="pure-button button-secondary">Save & Finish Later</button>
+                progress['complete'] ? null : <button type="button" onClick={this.finishLater} className="pure-button button-secondary">Save & Finish Later</button>
             }
                 
             </div>

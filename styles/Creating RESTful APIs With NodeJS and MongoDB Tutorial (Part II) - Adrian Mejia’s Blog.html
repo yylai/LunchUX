@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<!-- saved from url=(0095)http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/ -->
+<html class="js video maskImage placeholder" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/cb=gapi.loaded_1" async=""></script><script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/cb=gapi.loaded_0" async=""></script>
+  <meta charset="utf-8">
+  <title>Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog</title>
+  <meta name="author" content="Adrian Mejia">
+
+  
+  <meta name="description" content="Welcome to this RESTful API using Node.js (Express.js) and MongoDB (mongoose) tutorial. You can follow alone to make a stand alone API endpoint, or …">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb">
+  <link href="http://adrianmejia.com/favicon.png" rel="icon">
+  <link href="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="http://adrianmejia.com/atom.xml" rel="alternate" title="Adrian Mejia&#39;s Blog" type="application/atom+xml">
+  <script type="text/javascript" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/jXHR.js"></script><script type="text/javascript" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/plusone.js" gapi_processed="true"></script><script id="facebook-jssdk" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/all.js"></script><script type="text/javascript" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/ga.js"></script><script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/modernizr-2.0.js"></script>
+  <script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/css" rel="stylesheet" type="text/css">
+<link href="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/css(1)" rel="stylesheet" type="text/css">
+
+<link href="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/tables.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+<script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/jquery.min(1).js" type="text/javascript"></script>
+<script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/jquery.tableofcontents.min.js" type="text/javascript"></script>
+<script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/generate-toc.js" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24183929-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+<script type="text/javascript" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/embed.js"></script><script type="text/javascript" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/widgets.js"></script><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style><script type="text/javascript" charset="utf-8" async="" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/button.831500944bc3eb7ea5276ccdc3f71d2e.js"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f8;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3a5795;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #2f477a;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f8;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style></head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://adrianmejia.com/">Adrian Mejia’s Blog</a></h1>
+  
+    <h2>var life = [‘work_smart’, ‘have_fun’, ‘make_history’];</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://adrianmejia.com/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:adrianmejia.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search">
+  </fieldset>
+</form>
+  
+<fieldset class="mobile-nav"><select><option value="">Navigate…</option><option value="http://adrianmejia.com/">» Blog</option><option value="http://adrianmejia.com/blog/archives">» Archives</option><option value="http://adrianmejia.com/atom.xml">» RSS</option></select></fieldset><ul class="main-navigation">
+  <li><a href="http://adrianmejia.com/">Blog</a></li>
+  <li><a href="http://adrianmejia.com/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class="entry-date" datetime="2014-10-01T17:26:42-04:00"><span class="date"><span class="date-month">Oct</span> <span class="date-day">1</span><span class="date-suffix">st</span>, <span class="date-year">2014</span></span> <span class="time">5:26 pm</span></time>
+        
+           | <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#disqus_thread" data-disqus-identifier="http://adrianmejia.com">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div id="tocBlock"><span class="tocHeading">Table of Contents</span><ul id="toc"><li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#part-ii-restful-api-with-nodejs-and-mongodb">Part II: RESTful API with NodeJS and MongoDB</a>
+<ul>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#what-restful-api-really-means">What RESTful API really means?</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#setup">Setup</a>
+<ul>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#nodejs">NodeJS</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#expressjs">ExpressJS</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongodb">MongoDB</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#understanding-the-mean-stack">Understanding the MEAN Stack</a>
+<ul>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-crud">Mongoose CRUD</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#expressjs-and-middlewares">ExpressJS and Middlewares</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#api-clients-browser-postman-and-curl">API clients (Browser, Postman and curl)</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#wiring-up-the-mean-stack">Wiring up the MEAN Stack</a>
+<ul>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#bootstrapping-expressjs">Bootstrapping ExpressJS</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#connect-expressjs-to-mongodb">Connect ExpressJS to MongoDB</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#creating-the-todo-model-with-mongoose">Creating the Todo model with Mongoose</a>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#expressjs-routes">ExpressJS Routes</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#whats-next">What’s next?</a>
+</li>
+</ul>
+</li>
+</ul></div><div class="entry-content"><p>Welcome to this RESTful API using Node.js (Express.js) and MongoDB (mongoose) tutorial. You can follow alone to make a stand alone API endpoint, or you could also check out our <a href="http://adrianmejia.com/blog/2014/09/28/angularjs-tutorial-for-beginners-with-nodejs-expressjs-and-mongodb" target="_blank">AngularJS</a> or <a href="http://adrianmejia.com/blog/2012/09/11/backbone-dot-js-for-absolute-beginners-getting-started" target="_blank">BackboneJS</a> tutorials to build a javascript-client that connects with the endpoint we are going to built.</p>
+
+<!--More-->
+
+
+<h1 id="part-ii-restful-api-with-nodejs-and-mongodb">Part II: RESTful API with NodeJS and MongoDB</h1>
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/nodejs.png" width="200" height="200" title="NodeJS">
+<img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/mongodb.png" width="200" height="200" title="MongoDB"></p>
+
+<h2 id="what-restful-api-really-means">What RESTful API really means?</h2>
+
+<p>REST stands for Representational State Transfer. It is an architecture that allows <code>client-server</code> communication through a uniform interface. They are also <code>stateless</code>, <code>cachable</code> and has property called <code>idempotence</code>, which means that the side effect of multiple identical requests have the same effect as the same single request.</p>
+
+<p>HTTP RESTful API’s are compose of:</p>
+
+<ul>
+<li>HTTP methods, e.g. GET, PUT, DELETE, PATCH, POST, …</li>
+<li>Base URI, e.g. <code>http://adrianmejia.com</code></li>
+<li>URL path, e.g. <code>/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/</code></li>
+<li>Media type, e.g. <code>html</code>, <code>JSON</code>, <code>XML</code>, <code>Microformats</code>, <code>Atom</code>, <code>Images</code>…</li>
+</ul>
+
+
+<p>Here’s is a summary what we want to implement:</p>
+
+<table>
+<thead>
+<tr>
+<th> Resource (URI)  </th>
+<th>  POST (create) </th>
+<th> GET (read)  </th>
+<th> PUT (update)  </th>
+<th> DELETE (destroy)  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> /todos  </td>
+<td> create new task  </td>
+<td> list tasks  </td>
+<td> N/A (update all)  </td>
+<td>  N/A (destroy all) </td>
+</tr>
+<tr>
+<td> /todos/1  </td>
+<td>  error  </td>
+<td> show task ID 1  </td>
+<td> update task ID 1  </td>
+<td>  destroy task ID 1 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>NOTES</strong>:
+* Format will be JSON.
+* Bulk updates and bulk destroys are not safe, so we will not be implementing those.
+* POST, GET, PUT, DELETE == <strong>C</strong>REATE, <strong>R</strong>EAD, <strong>U</strong>PDATE, <strong>D</strong>ELETE == <strong>CRUD</strong>.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>The two main components of the MEAN stack are… NodeJS and MongoDB.</p>
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/node-js-mongodb.png" title="NodeJS and MongoDB"></p>
+
+<p>Note: If already have installed NodeJS, MongoDB (Mongoose), ExpressJS and knows about them separately then you can jump to <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#wiring-up-the-mean-stack">wiring the stack</a>, which is where the hands on start. Otherwise, if you want to review/learn about each member of the stack then follow alone and enjoy the ride!</p>
+
+<h3 id="nodejs">NodeJS</h3>
+
+<p>For short NodeJS is Javascript running outside the browser, in this case in the server.</p>
+
+<p>To install it, you can go to <a href="http://nodejs.org/" target="_blank">NodeJS Website</a>. But if you are using Mac and <a href="http://brew.sh/" target="_blank">brew</a> you can do <code>brew install nodejs</code> and in ubuntu use <a href="https://github.com/creationix/nvm">nvm</a> to install it. Once you have continue.</p>
+
+<p>Check node version and npm (node package manager) version:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">node -v
+</span><span class="line"><span class="c"># =&gt; v0.10.30</span>
+</span><span class="line">
+</span><span class="line">npm -v
+</span><span class="line"><span class="c"># =&gt; 2.0.0-alpha-5</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="expressjs">ExpressJS</h3>
+
+<p>ExpressJS is web application framework that runs on NodeJS. Allows you to build web applications and APIs endpoints. (mode details later).</p>
+
+<p>Install it using npm:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">npm install -g express
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notice <code>-g</code>. It will install <code>express</code> globally and add it the <code>PATH</code>, so you can run it from anywhere.</p>
+
+<p>Check version:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">express -V
+</span><span class="line"><span class="c"># =&gt; 4.9.0</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="mongodb">MongoDB</h3>
+
+<p>MongoDB is a document-oriented NoSQL database (Big Data ready). It stores data in JSON-like format and allows to perform SQL-like queries against it.</p>
+
+<p>You can installed following the <a href="http://docs.mongodb.org/manual/installation/" target="_blank">instructions here</a>. If you have a Mac and <a href="http://brew.sh/" target="_blank">brew</a> it’s just: <code>brew install mongodb &amp;&amp; mongod</code>. In ubuntu <code>sudo apt-get -y install mongodb</code>.</p>
+
+<p>Check version:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c"># Mac</span>
+</span><span class="line">mongod --version
+</span><span class="line"><span class="c"># =&gt; db version v2.6.4</span>
+</span><span class="line"><span class="c"># =&gt; 2014-10-01T19:07:26.649-0400 git version: nogitversion</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Ubuntu</span>
+</span><span class="line">mongod --version
+</span><span class="line"><span class="c"># =&gt; db version v2.0.4, pdfile version 4.5</span>
+</span><span class="line"><span class="c"># =&gt; Wed Oct  1 23:06:54 git version: nogitversion</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h2 id="understanding-the-mean-stack">Understanding the MEAN Stack</h2>
+
+<p>If follow the previous steps you should have all you need to complete this tutorial. Basically, we are going to build an API that allow users to CRUD (Create-Read-Update-Delete) Todo tasks from database.</p>
+
+<h3 id="mongoose-crud">Mongoose CRUD</h3>
+
+<p>CRUD = <strong>C</strong>reate-<strong>R</strong>ead-<strong>U</strong>pdate-<strong>D</strong>elete</p>
+
+<p>We can play with Mongoose in the console. In the <code>todoApp</code> type <code>node</code> to enter in the node CLI. Then:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s1">'mongodb://localhost/test3'</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">TodoSchema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span><span class="p">({</span>
+</span><span class="line">  <span class="nx">name</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">completed</span><span class="o">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">note</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">updated_at</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Date</span><span class="p">,</span> <span class="k">default</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span> <span class="p">},</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">Todo</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">'Todo'</span><span class="p">,</span> <span class="nx">TodoSchema</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h4>Mongoose Create</h4>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">todo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Todo</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Master NodeJS'</span><span class="p">,</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">note</span><span class="o">:</span> <span class="s1">'Getting there...'</span><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">todo</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+</span><span class="line">    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class="line">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">todo</span><span class="p">);</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>You can also build the object and save in one step using <code>create</code>:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Master Javscript'</span><span class="p">,</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">note</span><span class="o">:</span> <span class="s1">'Getting better everyday'</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">todo</span><span class="p">){</span>
+</span><span class="line">    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="k">else</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">todo</span><span class="p">);</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h4>Mongoose Read and Query</h4>
+
+<p>There are multiple options for reading/querying data:</p>
+
+<ul>
+<li>Model.find(conditions, [fields], [options], [callback])</li>
+<li>Model.findById(id, [fields], [options], [callback])</li>
+<li>Model.findOne(conditions, [fields], [options], [callback])</li>
+</ul>
+
+
+<p>Some examples:</p>
+
+<figure class="code"><figcaption><span>Find all</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">todos</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">todos</span><span class="p">)</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>You can also add queries</p>
+
+<figure class="code"><figcaption><span>Find with queries</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">callback</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">  <span class="k">else</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// Get all completed tasks</span>
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">completed</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// Get all tasks ending with `JS`</span>
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="sr">/JS$/</span> <span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>You can chain multiple queries, e.g.:</p>
+
+<figure class="code"><figcaption><span>Chaining queries</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="kd">var</span> <span class="nx">oneYearAgo</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+</span><span class="line"><span class="nx">oneYearAgo</span><span class="p">.</span><span class="nx">setYear</span><span class="p">(</span><span class="nx">oneYearAgo</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// Get all tasks staring with `Master`, completed</span>
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="sr">/^Master/</span><span class="p">,</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// Get all tasks staring with `Master`, not completed and created from year ago to now...</span>
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="sr">/^Master/</span><span class="p">,</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}).</span><span class="nx">where</span><span class="p">(</span><span class="s1">'updated_at'</span><span class="p">).</span><span class="nx">gt</span><span class="p">(</span><span class="nx">oneYearAgo</span><span class="p">).</span><span class="nx">exec</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h4>Mongoose Update</h4>
+
+<p>Each model has an <code>update</code> method which accepts multiple updates (for batch updates because doesn’t return an array with data). Alternatively, the method <code>findOneAndUpdate</code> could be used to update just one and return an object.</p>
+
+<ul>
+<li>Model.update(conditions, update, [options], [callback])</li>
+<li>Model.findByIdAndUpdate(id, [update], [options], [callback])</li>
+<li>Model.findOneAndUpdate([conditions], [update], [options], [callback])</li>
+</ul>
+
+
+<figure class="code"><figcaption><span>Todo.update and Todo.findOneAndUpdate</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// Model.update(conditions, update, [options], [callback])</span>
+</span><span class="line"><span class="c1">// update `multi`ple tasks from complete false to true</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">false</span> <span class="p">},</span> <span class="p">{</span> <span class="nx">completed</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="p">{</span> <span class="nx">multi</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">numberAffected</span><span class="p">,</span> <span class="nx">raw</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">handleError</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The number of updated documents was %d'</span><span class="p">,</span> <span class="nx">numberAffected</span><span class="p">);</span>
+</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The raw response from Mongo was '</span><span class="p">,</span> <span class="nx">raw</span><span class="p">);</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">//Model.findOneAndUpdate([conditions], [update], [options], [callback])</span>
+</span><span class="line"><span class="cm">/* prompt&gt; */</span> <span class="nx">Todo</span><span class="p">.</span><span class="nx">findOneAndUpdate</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="sr">/JS$/</span> <span class="p">},</span> <span class="p">{</span><span class="nx">completed</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span> <span class="nx">callback</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h4>Mongoose Delete</h4>
+
+<p><code>update</code> and <code>remove</code> mongoose API are identical, the only difference it is that no elements are returned.</p>
+
+<ul>
+<li>Model.remove(conditions, [callback])</li>
+<li>Model.findByIdAndRemove(id, [options], [callback])</li>
+<li>Model.findOneAndRemove(conditions, [options], [callback])</li>
+</ul>
+
+
+<h3 id="expressjs-and-middlewares">ExpressJS and Middlewares</h3>
+
+<p>ExpressJS is a complete web framework solution. It has HTML template solutions (jade, ejs, handlebars, hogan.js) and CSS precompilers (less, stylus, compass). Through middlewares layers, it handles: cookies, sessions, caching, CSRF, compression and many more.</p>
+
+<p><strong>Middlewares</strong> are a stack of processors that runs on each request made to the server. You can have any number of middlewares that will process the request one by one in a serial fashion. Some might alter the request input, log outputs, add data and pass it to the <code>next()</code> middleware in the chain.</p>
+
+<p>Middlewares are added to ExpressJS stack using <code>app.use</code> for any method or the app.VERB (e.g., <code>app.get</code>, <code>app.delete</code>, <code>app.post</code>, <code>app.update</code>, …)</p>
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/express-middlewares.png" title="ExpressJS Middlewares"></p>
+
+<p>Let’s say you want to log the IP of the client on each request:</p>
+
+<figure class="code"><figcaption><span>Log the client IP on every request</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="kd">var</span> <span class="nx">ip</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'x-forwarded-for'</span><span class="p">]</span> <span class="o">||</span> <span class="nx">req</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">remoteAddress</span><span class="p">;</span>
+</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Client IP:'</span><span class="p">,</span> <span class="nx">ip</span><span class="p">);</span>
+</span><span class="line">  <span class="nx">next</span><span class="p">();</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>You can also specify a path that you want the middleware to activate on.</p>
+
+<figure class="code"><figcaption><span>Middleware mounted on “/todos/:id” and log the request method</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">'/todos/:id'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Request Type:'</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+</span><span class="line">  <span class="nx">next</span><span class="p">();</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>And finally you can use <code>app.get</code> to catch GET request with maching route, reply the request with a <code>response.send</code> and end the middleware chain. Let’s use what we learned on <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-read-and-query">mongoose read</a> to reply with a user data matching the <code>id</code>.</p>
+
+<figure class="code"><figcaption><span>Middleware mounted on “/todos/:id” and returns </span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/todos/:id'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">todo</span><span class="p">){</span>
+</span><span class="line">    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">todo</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notice that all previous middlewares called <code>next()</code> except this last one, because it sends a respond (in JSON) to the client with the requeste <code>todo</code> data.</p>
+
+<p>Hopefully, you don’t have to develop a bunch of middlewares besides routes, since ExpressJS has a bunch of middlewares available.</p>
+
+<h4>Default Express 4.0 middlewares</h4>
+
+<ul>
+<li><p><a href="https://github.com/expressjs/morgan" target="_blank">morgan</a>: logger</p></li>
+<li><p><a href="https://github.com/expressjs/body-parser" target="_blank">body-parser</a>: parse the body so you can access parameters in requests in <code>req.body</code>. e.g. <code>req.body.name</code>.</p></li>
+<li><p><a href="https://github.com/expressjs/cookie-parser" target="_blank">cookie-parser</a>: parse the cookies so you can access parameters in cookies <code>req.cookies</code>. e.g. <code>req.cookies.name</code>.</p></li>
+<li><p><a href="https://github.com/expressjs/serve-favicon" target="_blank">serve-favicon</a>: exactly that, serve favicon from route <code>/favicon.ico</code>. Should be call on the top before any other routing/middleware takes place to avoids unnecessary parsing.</p></li>
+</ul>
+
+
+<h4>Other ExpressJS Middlewares</h4>
+
+<p>The following middlewares are not added by default, but It’s nice to know they exist at least:</p>
+
+<ul>
+<li><p><a href="https://github.com/expressjs/compression" target="_blank">compression</a>: compress all request. e.g. <code>app.use(compression())</code></p></li>
+<li><p><a href="https://github.com/expressjs/session" target="_blank">session</a>: create sessions. e.g. <code>app.use(session({secret: 'Secr3t'}))</code></p></li>
+<li><p><a href="https://github.com/expressjs/method-override" target="_blank">method-override</a>: <code>app.use(methodOverride('_method'))</code> Override methods to the one specified on the <code>_method</code> param. e.g. <code>GET /resource/1?_method=DELETE</code> will become <code>DELETE /resource/1</code>.</p></li>
+<li><p><a href="https://github.com/expressjs/response-time" target="_blank">response-time</a>: <code>app.use(responseTime())</code> adds <code>X-Response-Time</code> header to responses.</p></li>
+<li><p><a href="https://github.com/expressjs/errorhandler" target="_blank">errorhandler</a>: Aid development, by sending full error stack traces to the client when an error occurs. <code>app.use(errorhandler())</code>. It is good practice to surround it with an if statement to check <code>process.env.NODE_ENV === 'development'</code>.</p></li>
+<li><p><a href="https://github.com/expressjs/vhost" target="_blank">vhost</a>: Allows you to use different stack of middlewares depending on the request <code>hostname</code>. e.g. <code>app.use(vhost('*.user.local', userapp))</code> and <code>app.use(vhost('assets-*.example.com', staticapp))</code> where <code>userapp</code> and <code>staticapp</code> are different express instances with different middlewares.</p></li>
+<li><p><a href="https://github.com/expressjs/csurf" target="_blank">csurf</a>: Adds a <strong>C</strong>ross-<strong>s</strong>ite <strong>r</strong>equest <strong>f</strong>orgery (CSRF) protection by adding a token to responds either via <code>session</code> or <code>cookie-parser</code> middleware. <code>app.use(csrf());</code></p></li>
+<li><p><a href="https://github.com/expressjs/timeout" target="_blank">timeout</a>: halt execution if it takes more that a given time. e.g. <code>app.use(timeout('5s'));</code>. However you need to check by yourself under every request with a middleware that checks <code>if (!req.timedout) next();</code>.</p></li>
+</ul>
+
+
+<h3 id="api-clients-browser-postman-and-curl">API clients (Browser, Postman and curl)</h3>
+
+<p>I know you have not created any route yet. However, in the next sections you will. These are just three ways to retrieve, change and delete data from your future API.</p>
+
+<h4>Curl</h4>
+
+<figure class="code"><figcaption><span>Create tasks</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c"># Create task</span>
+</span><span class="line">curl -XPOST http://localhost:3000/todos -d <span class="s1">'name=Master%20Routes&amp;completed=false&amp;note=soon...'</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># List tasks</span>
+</span><span class="line">curl -XGET http://localhost:3000/todos
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h4>Browser and Postman</h4>
+
+<p>If you open your browser and type <code>localhost:3000/todos</code> you will see all the tasks (when you implement it). However, you cannot do post commands by default. For further testing let’s use a Chrome plugin called <a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en" target="_blank">Postman</a>. It allows you to use all the HTTP VERBS easily and check <code>x-www-form-urlencoded</code> for adding parameters.</p>
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/postman_post.png" title="Postman POST example"></p>
+
+<h4>Websites and Mobile Apps</h4>
+
+<p>Probably this is the main consumers of the APIs. You can interact with RESTful APIs using jQuery’s <code>$ajax</code> and its wrappers, BackboneJS’s Collections/models, AngularJS’s <code>$http</code> or <code>$resource</code>, among many other libraries/frameworks and mobile clients.</p>
+
+<p>In the end, we are going to explain how to use AngularJS to interact with this API.</p>
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/api_consumers.png" title="API Consumers">
+<small class="muted">Image from CodeSchool</small></p>
+
+<h2 id="wiring-up-the-mean-stack">Wiring up the MEAN Stack</h2>
+
+<h3 id="bootstrapping-expressjs">Bootstrapping ExpressJS</h3>
+
+<p>After a detour in Node CLI, MongoDB, Mongoose, tools and middlewares land we are back to our express todoApp. This time to create the routes and finalize our RESTful API.</p>
+
+<p>Create the app typing <code>express -e todoApp</code>, install dependencies <code>cd todoApp &amp;&amp; npm install</code> and run the app <code>DEBUG=todoApp ./bin/www</code>:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">express -e todoApp
+</span><span class="line">
+</span><span class="line"><span class="c"># =&gt;   create : todoApp                  # app directory  </span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/package.json     # file containing all the dependencies</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/app.js           # Entry point of the application: defines middleware, initialize database connections, routes and more.</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/public           # all files contained here are accessible through to public (browser or API calls).</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/public/javascripts</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/public/images</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/public/stylesheets</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/public/stylesheets/style.css</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/routes           # containes all the routes files</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/routes/index.js</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/routes/users.js</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/views            # contains all the HTML templates</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/views/index.ejs</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/views/error.ejs</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/bin              # contains executable files</span>
+</span><span class="line"><span class="c"># =&gt;   create : todoApp/bin/www          # bootstrap the app: loads app.js, and set the port for the webserver.</span>
+</span><span class="line"><span class="c"># =&gt;</span>
+</span><span class="line"><span class="c"># =&gt;   install dependencies:</span>
+</span><span class="line"><span class="c"># =&gt;     $ cd todoApp &amp;&amp; npm install</span>
+</span><span class="line"><span class="c"># =&gt;</span>
+</span><span class="line"><span class="c"># =&gt;   run the app:</span>
+</span><span class="line"><span class="c"># =&gt;     $ DEBUG=todoApp ./bin/www</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h3 id="connect-expressjs-to-mongodb">Connect ExpressJS to MongoDB</h3>
+
+<p>Hopefully, you have installed MongoDB in the <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongodb">setup section</a>, and you can start it typing:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">mongod
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Install the MongoDB driver for NodeJS called mongoose:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">npm install mongoose --save
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Notice <code>--save</code>. It will add it to the <code>todoApp/package.json</code></p>
+
+<p>Next, you need to require mongoose in the <code>todoApp/app.js</code></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span>
+</span><span class="line"><span class="nx">mongoose</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s1">'mongodb://localhost/todoApp'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'connection error'</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'connection successful'</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Now, When you run <code>npm start</code> or <code>./bin/www</code>, you will notice the message <code>connection successful</code>. Did you? Great!</p>
+
+<p>You can find the repository <a href="https://github.com/amejiarosario/todoAPIjs">here</a> and the diff code at this point:
+<a href="https://github.com/amejiarosario/todoAPIjs/commit/d3be6a287e8aff39ab862971da4f050d04e552a1">diff</a></p>
+
+<h3 id="creating-the-todo-model-with-mongoose">Creating the Todo model with Mongoose</h3>
+
+<p>It is show time! All the above was setup and preparation for this moment. Let bring the API to life.</p>
+
+<p>Create a <code>models</code> directory and a <code>Todo.js</code> model:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">mkdir models
+</span><span class="line">touch models/Todo.js
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>In the <code>models/Todo.js</code>:</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">var</span> <span class="nx">TodoSchema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span><span class="p">({</span>
+</span><span class="line">  <span class="nx">name</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">completed</span><span class="o">:</span> <span class="nb">Boolean</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">note</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+</span><span class="line">  <span class="nx">updated_at</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nb">Date</span><span class="p">,</span> <span class="k">default</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span> <span class="p">},</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">'Todo'</span><span class="p">,</span> <span class="nx">TodoSchema</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/afc908027339b22f10de3b77518ac0728668d470">diff</a></p>
+
+<p>What’s going up there? Isn’t MongoDB suppose to be schemaless? Well, it is schemaless and very flexible indeed. However, very often we want bring sanity to our API/WebApp through validations and enforcing a schema to keep a consistent structure. Mongoose does that for us, which is nice.</p>
+
+<p>You can use the following types:</p>
+
+<ul>
+<li>String</li>
+<li>Boolean</li>
+<li>Date</li>
+<li>Array</li>
+<li>Number</li>
+<li>ObjectId</li>
+<li>Mixed</li>
+<li>Buffer</li>
+</ul>
+
+
+<h3 id="expressjs-routes">ExpressJS Routes</h3>
+
+<p>To sum up we want to achieve the following:</p>
+
+<table>
+<thead>
+<tr>
+<th> Resource (URI)  </th>
+<th>  POST (create) </th>
+<th> GET (read)  </th>
+<th> PUT (update)  </th>
+<th> DELETE (destroy)  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> /todos  </td>
+<td> create new task  </td>
+<td> list tasks  </td>
+<td> error  </td>
+<td>  error </td>
+</tr>
+<tr>
+<td> /todos/:id  </td>
+<td>  error  </td>
+<td> show task :id  </td>
+<td> update task :id  </td>
+<td>  destroy task ID 1 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Let’s setup the routes</p>
+
+<figure class="code"><figcaption><span>Create a new route called `todos.js` in the `routes` folder or rename `users.js`</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">mv routes/users.js routes/todos.js
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>In <code>app.js</code> add new <code>todos</code> route or just replace <code>./routes/users</code> for <code>./routes/todos</code></p>
+
+<figure class="code"><figcaption><span>Adding todos routes</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">todos</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./routes/todos'</span><span class="p">);</span>
+</span><span class="line"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">'/todos'</span><span class="p">,</span> <span class="nx">todos</span><span class="p">);</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>All set! Now, let’s go back and edit our <code>routes/todos.js</code>.</p>
+
+<h4>List: GET /todos</h4>
+
+<p>Remember <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-read-and-query"> mongoose query api</a>? Here’s how to use it in this context:</p>
+
+<figure class="code"><figcaption><span>routes/todos.js</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'express'</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">express</span><span class="p">.</span><span class="nx">Router</span><span class="p">();</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">var</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">Todo</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../models/Todo.js'</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* GET /todos listing. */</span>
+</span><span class="line"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">todos</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">todos</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Harvest time! We don’t have any task in database but at least we verify it is working:</p>
+
+<figure class="code"><figcaption><span>Testing all together</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c"># Start database</span>
+</span><span class="line">mongod
+</span><span class="line">
+</span><span class="line"><span class="c"># Start Webserver (in other terminal tab)</span>
+</span><span class="line"><span class="nv">DEBUG</span><span class="o">=</span>todoApp ./bin/www
+</span><span class="line">
+</span><span class="line"><span class="c"># Test API (in other terminal tab)</span>
+</span><span class="line">curl localhost:3000/todos
+</span><span class="line"><span class="c"># =&gt; []% </span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/54ab912ea9aa2b6633ae12816beb6e6c3d2702e6">diff</a></p>
+
+<p>If it returns an empty array <code>[]</code> you are all set. If you get errors, try going back and making sure you didn’t forget anything or write a comment at the end of the post for help.</p>
+
+<h4>Create: POST /todos</h4>
+
+<p>Back in <code>routes/todos.js</code>, we are going to add the ability to create using <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-create">mongoose create</a>. Could you make it work before looking at the next example?</p>
+
+<figure class="code"><figcaption><span>routes/todos.js (showing just create route)</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* POST /todos */</span>
+</span><span class="line"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/28b60c4bf9c6d8b08c3351f725e17c7f40a077be">diff</a></p>
+
+<p>Few things:</p>
+
+<ul>
+<li>We are using the <code>router.post</code> instead of <code>router.get</code>.</li>
+<li>You have to stop and run the server again: <code>DEBUG=todoApp ./bin/www</code>. From now on, use <code>nodemon</code> to refresh automatically. <code>npm install nodemon</code> and then run <code>nodemon</code>.</li>
+</ul>
+
+
+<h4>Show: GET /todos/:id</h4>
+
+<p>This is a snap with <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-read-and-query"><code>Todo.findById</code></a> and <code>req.params</code>. Notice that <code>params</code> matches the placeholder name we set while defining the route. <code>:id</code> in this case.</p>
+
+<figure class="code"><figcaption><span>routes/todos.js (showing just show route)</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* GET /todos/id */</span>
+</span><span class="line"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:id'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/7d8bc67178a4f162858395845c076d9223926bf8">diff</a></p>
+
+<p>Test it in <em>POST</em>MAN using an <code>_id</code> from you created elements. E.g. <code>localhost:3000/todos/542d7d290a705126360ac635</code>.</p>
+
+<h4>Update: PUT /todos/:id</h4>
+
+<p>Back in <code>routes/todos.js</code>, we are going to update tasks. This one you can do it before looking at the example bellow, review <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-update">findByIdAndUpdate</a> and give it a try!</p>
+
+<figure class="code"><figcaption><span>routes/todos.js (showing just update route)</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* PUT /todos/:id */</span>
+</span><span class="line"><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">'/:id'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">findByIdAndUpdate</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/00dafe491e0d0b59fa53e86d8c187c42d7824200">diff</a></p>
+
+<p>Test it in <em>POST</em>MAN :)</p>
+
+<h4>Destroy: DELETE /todos/:id</h4>
+
+<p>Finally, the last one! Almost identical to <code>update</code>, use <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/#mongoose-delete"><code>findByIdAndRemove</code></a>.</p>
+
+<figure class="code"><figcaption><span>routes/todos.js (showing just update route)</span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/* DELETE /todos/:id */</span>
+</span><span class="line"><span class="nx">router</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s1">'/:id'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="nx">Todo</span><span class="p">.</span><span class="nx">findByIdAndRemove</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">post</span><span class="p">);</span>
+</span><span class="line">  <span class="p">});</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p><a href="https://github.com/amejiarosario/todoAPIjs/commit/cbf5366e2b4e1a683ed50d2148ed6a548616d3f8">diff</a></p>
+
+<p>Is it working? Cool, you are done then!
+Is NOT working? take a look at the <a href="https://github.com/amejiarosario/todoAPIjs">full repository</a>.</p>
+
+<h2 id="whats-next">What’s next?</h2>
+
+<p>Connecting AngularJS with this endpoint:</p>
+
+<ul>
+<li>Part III - <a href="http://adrianmejia.com/blog/2014/10/03/mean-stack-tutorial-mongodb-expressjs-angularjs-nodejs/">MEAN Stack: Wiring all together</a></li>
+</ul>
+
+
+<p><img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/MEAN_jarroba.png" title="MEAN Stack"></p>
+
+<p><strong>Related tutorials</strong></p>
+
+<ul>
+<li>Part I - <a href="http://adrianmejia.com/blog/2014/09/28/angularjs-tutorial-for-beginners-with-nodejs-expressjs-and-mongodb/">AngularJS</a></li>
+<li>Part III - <a href="http://adrianmejia.com/blog/2014/10/03/mean-stack-tutorial-mongodb-expressjs-angularjs-nodejs/">MEAN Stack: Wiring all together</a></li>
+<li><a href="http://adrianmejia.com/blog/categories/backbonejs">BackboneJS Tutorials</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Adrian Mejia</span></span>
+
+      
+
+
+
+
+<time class="entry-date" datetime="2014-10-01T17:26:42-04:00"><span class="date"><span class="date-month">Oct</span> <span class="date-day">1</span><span class="date-suffix">st</span>, <span class="date-year">2014</span></span> <span class="time">5:26 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class="category" href="http://adrianmejia.com/blog/categories/agile-frameworks/">agile frameworks</a>, <a class="category" href="http://adrianmejia.com/blog/categories/angularjs/">angularjs</a>, <a class="category" href="http://adrianmejia.com/blog/categories/backbonejs/">backbonejs</a>, <a class="category" href="http://adrianmejia.com/blog/categories/javascript/">javascript</a>, <a class="category" href="http://adrianmejia.com/blog/categories/mean-stack/">mean stack</a>, <a class="category" href="http://adrianmejia.com/blog/categories/mongodb/">mongodb</a>, <a class="category" href="http://adrianmejia.com/blog/categories/nodejs/">nodejs</a>, <a class="category" href="http://adrianmejia.com/blog/categories/restful/">restful</a>, <a class="category" href="http://adrianmejia.com/blog/categories/tutorials/">tutorials</a>, <a class="category" href="http://adrianmejia.com/blog/categories/web-development/">web development</a>, <a class="category" href="http://adrianmejia.com/blog/categories/web-frameworks/">web frameworks</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/tweet_button.6a78875565a912489e9aef879c881358.en.html" style="position: static; visibility: visible; width: 62px; height: 20px;" data-url="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/"></iframe>
+  
+  
+  <div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1456765544095" name="I0_1456765544095" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/fastbutton.html" data-gapiattached="true" title="+1"></iframe></div>
+  
+  
+    <div class="fb-like fb_iframe_widget" data-send="true" data-width="450" data-show-faces="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=212934732101925&amp;container_width=789&amp;href=http%3A%2F%2Fadrianmejia.com%2Fblog%2F2014%2F10%2F01%2Fcreating-a-restful-api-tutorial-with-nodejs-and-mongodb%2F&amp;locale=en_US&amp;sdk=joey&amp;send=true&amp;show_faces=false&amp;width=450"><span style="vertical-align: bottom; width: 450px; height: 20px;"><iframe name="f36d078d5c" width="450px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/like.html" style="border: none; visibility: visible; width: 450px; height: 20px;" class=""></iframe></span></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="http://adrianmejia.com/blog/2014/09/28/angularjs-tutorial-for-beginners-with-nodejs-expressjs-and-mongodb/" title="Previous Post: AngularJS tutorial for beginners with NodeJS ExpressJS and MongoDB (Part I)">« AngularJS tutorial for beginners with NodeJS ExpressJS and MongoDB (Part I)</a>
+      
+      
+        <a class="basic-alignment right" href="http://adrianmejia.com/blog/2014/10/03/mean-stack-tutorial-mongodb-expressjs-angularjs-nodejs/" title="Next Post: MEAN Stack Tutorial MongoDB ExpressJS AngularJS NodeJS (Part III)">MEAN Stack Tutorial MongoDB ExpressJS AngularJS NodeJS (Part III) »</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe id="dsq-app2" name="dsq-app2" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 6104px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+  </section>
+
+</div>
+
+<aside class="sidebar thirds">
+  
+    <section class="first odd">
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="http://adrianmejia.com/blog/2016/01/09/how-to-build-scalable-apps/">How to Build Scalable Apps in 2016?</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://adrianmejia.com/blog/2014/10/07/grunt-js-tutorial-from-beginner-to-ninja/">Grunt JS Tutorial From Beginner to Ninja</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://adrianmejia.com/blog/2014/10/03/mean-stack-tutorial-mongodb-expressjs-angularjs-nodejs/">MEAN Stack Tutorial MongoDB ExpressJS AngularJS NodeJS (Part III)</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/">Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II)</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://adrianmejia.com/blog/2014/09/28/angularjs-tutorial-for-beginners-with-nodejs-expressjs-and-mongodb/">AngularJS Tutorial for Beginners With NodeJS ExpressJS and MongoDB (Part I)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section class="googleplus even">
+  <h1>
+    <a href="http://feeds.feedburner.com/AdrianMejiasBlog">
+      <img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/rss3.png" width="32" height="32">
+      RSS
+    </a>
+  </h1>
+</section>
+
+
+<section class="googleplus odd">
+  <h1>
+    <a href="http://www.linkedin.com/in/adrianmejia">
+      <img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/linkedin.png" width="32" height="32">
+      adrianmejia
+    </a>
+  </h1>
+</section>
+
+
+<section class="googleplus first even">
+  <h1>
+    <a href="https://github.com/amejiarosario">
+      <img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/github.png" width="32" height="32">
+      @amejiarosario
+    </a>
+  </h1>
+</section>
+
+
+<section class="googleplus odd">
+  <h1>
+    <a href="https://twitter.com/amejiarosario">
+      <img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/twitter.png" width="32" height="32">
+      @amejiarosario
+    </a>
+  </h1>
+</section>
+
+
+<section class="googleplus even">
+  <h1>
+    <a href="https://plus.google.com/105957252272382685246?rel=author">
+      <img src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<!-- Begin MailChimp Signup Form -->
+<link href="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/slim-081711.css" rel="stylesheet" type="text/css">
+
+<section class="first odd">
+  <h1>Subscribe</h1>
+  <!-- Begin MailChimp Signup Form -->
+  <div id="mc_embed_signup">
+    <form action="http://adrianmejia.us2.list-manage.com/subscribe/post?u=2294bb28c5931a6f2338d2474&amp;id=52678e825b" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+      <div class="mc-field-group">
+  <label for="mce-EMAIL">
+    Enter your email to receive updates
+  </label>
+  <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="you@email.com">
+      </div>
+      <div id="mce-responses" class="clear">
+  <div class="response" id="mce-error-response" style="display:none"></div>
+  <div class="response" id="mce-success-response" style="display:none"></div>
+      </div>
+      <div class="clear">
+  <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+      </div>
+    </form>
+  </div>
+  <!--End mc_embed_signup-->
+</section>
+
+<section class="even">
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos"><li><a href="https://github.com/amejiarosario/meanshop">meanshop</a><p>Building an e-commerce application with the MEAN stack</p></li><li><a href="https://github.com/amejiarosario/amejiarosario.github.io">amejiarosario.github.io</a><p></p></li><li><a href="https://github.com/amejiarosario/impressjs-presentations">impressjs-presentations</a><p></p></li><li><a href="https://github.com/amejiarosario/deprecated-meanshop">deprecated-meanshop</a><p>Building an e-commerce application with the MEAN stack</p></li><li><a href="https://github.com/amejiarosario/blogx">blogx</a><p></p></li></ul>
+  
+  <a href="https://github.com/amejiarosario">@amejiarosario</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'amejiarosario',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright © 2016 - Adrian Mejia
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adrianmejia';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/';
+        var disqus_url = 'http://adrianmejia.com/blog/2014/10/01/creating-a-restful-api-tutorial-with-nodejs-and-mongodb/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="f588563d" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/ping.html" style="display: none;"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_http" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Facebook Cross Domain Communication Frame" aria-hidden="true" tabindex="-1" id="fb_xdm_frame_http" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/xd_arbiter.html" style="border: none;"></iframe><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Facebook Cross Domain Communication Frame" aria-hidden="true" tabindex="-1" id="fb_xdm_frame_https" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/xd_arbiter(1).html" style="border: none;"></iframe></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  <script type="text/javascript">
+  jQuery(document).ready(function() {
+    // Put a TOC right before the entry content.
+    generateTOC('.entry-content', 'Table of Contents');
+  });
+  </script>
+
+
+
+
+
+<iframe name="oauth2relay592775900" id="oauth2relay592775900" src="./Creating RESTful APIs With NodeJS and MongoDB Tutorial (Part II) - Adrian Mejia’s Blog_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;"></iframe></body></html>

@@ -13,6 +13,9 @@ import assistanceMessages from './assistanceMessages';
 import assistance from './assistance';
 import signer from './signer';
 import completeMessages from './completeMessages';
+import childIncome from './childIncome';
+import adultIncome from './adultIncome';
+import request from 'superagent';
 
 export default {
   previousStep,
@@ -23,7 +26,9 @@ export default {
   form,
   welcomeMessages,
   childMessages,
+  childIncome,
   childIncomeMessages,
+  adultIncome,
   adultMessages,
   assistanceMessages,
   assistance,
